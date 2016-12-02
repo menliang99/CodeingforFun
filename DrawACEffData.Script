@@ -1,0 +1,37 @@
+
+
+set format y '%2.0f%%'
+set format x '%2.0f%%'  # add "%" to the raw data
+
+set xrange [20 : 108]
+set xtics 25
+set yrange [78 : 98]
+set ytics 2
+
+set grid
+
+set title "AC Efficiency Data"
+set xlabel "Load Variation"
+set ylabel "Energy Efficiency"
+
+set term pdf size 8.5in, 11in
+set output 'output.pdf'
+
+set style line 1 lt 1 lw 2 lc rgb "red"
+set style line 2 lt 1 lw 2 lc rgb "blue"
+set style line 3 lt 1 lw 2 lc rgb "forest-green"
+set style line 4 lt 1 lw 2 lc rgb "brown"
+set style line 5 lt 1 lw 2 lc rgb "blueviolet"
+set style line 6 lt 1 lw 2 lc rgb "orange"
+
+set style data lines
+set datafile separator "\t"
+
+
+plot "ACEffData" using 1:2 with linespoints ls 1 title "AC90V, PWM65kHz", \
+ '' using 1:2:(sprintf("%2.2f%%", $2)) with labels center offset 1, 0.5 notitle, \
+    "ACEffData" using 1:3 with linespoints ls 2 title "AC110V, PWM110kHz", \
+ '' using 1:3:(sprintf("%2.2f%%", $3)) with labels center offset 1, 0.5 notitle, \
+    "ACEffData" using 1:4 with linespoints ls 3 title "AC230V, PWM140kHz", \
+ '' using 1:4:(sprintf("%2.2f%%",$4)) with labels center offset 1, -0.5 notitle  #display raw data on the line
+
